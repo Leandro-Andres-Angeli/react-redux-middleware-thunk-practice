@@ -31,23 +31,27 @@ const initialState = [
 export const storeReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.addProduct:
-      console.log('unnmer');
-      // return [...state, { ...action.payload }];
       return produce(state, (drafState) => {
+        //IMPORTANTCOMMENT inmmer functions produce must return void
         drafState.push(action.payload);
       });
-    // const nextState = produce((draftState, draft) => {
-    //   draft.push(action.payload);
-    //   return state;
-    // });
-    // return nextState;
 
     case types.updateProduct:
-      return state.map((fruit) =>
-        fruit.id === action.payload.id ? { ...action.payload } : fruit
-      );
+      //IMPORTANTCOMMENT inmmer functions produce must return void
+      return produce(state, (draftState) => {
+        const index = draftState.findIndex(
+          ({ id }) => id === action.payload.id
+        );
+        draftState[index] = action.payload;
+      });
     case types.deleteProduct:
-      return state.filter(({ id }) => id !== action.payload.id);
+      //IMPORTANTCOMMENT inmmer functions produce must return void
+      return produce(state, (draftState) => {
+        const index = draftState.findIndex(
+          ({ id }) => id === action.payload.id
+        );
+        draftState.splice(index, 1);
+      });
     default:
       return state;
   }
