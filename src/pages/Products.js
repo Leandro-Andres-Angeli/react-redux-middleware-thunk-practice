@@ -8,41 +8,41 @@ import {
   updateProduct,
   addProduct,
 } from './../store/store-actions';
-
+import Product from './../components/Product';
 const mapStateToProps = ({ fruits }) => ({ fruits });
-const Product = ({ dispatch, name, id }) => {
-  // console.log(props)
-  // const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const {
-      target: {
-        name: { value },
-      },
-    } = e;
+// const Product = ({ name, id }) => {
+//   // console.log(props)
+//   const dispatch = useDispatch();
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     const {
+//       target: {
+//         name: { value },
+//       },
+//     } = e;
 
-    dispatch(updateProduct({ id, name: value }));
-  };
-  return (
-    <ListGroup.Item key={id}>
-      <Form onSubmit={handleSubmit}>
-        <Form.Label>fruit name</Form.Label>
-        <Form.Control name='name' type='text' defaultValue={name} />
-        <Stack direction='horizontal' className='mt-2' gap={3}>
-          <Button type='submit' variant='primary'>
-            Edit
-          </Button>
-          <Button
-            variant='danger'
-            onClick={() => dispatch(deleteProduct({ id }))}
-          >
-            Delete
-          </Button>
-        </Stack>
-      </Form>
-    </ListGroup.Item>
-  );
-};
+//     dispatch(updateProduct({ id, name: value }));
+//   };
+//   return connect()(
+//     <ListGroup.Item key={id}>
+//       <Form onSubmit={handleSubmit}>
+//         <Form.Label>fruit name</Form.Label>
+//         <Form.Control name='name' type='text' defaultValue={name} />
+//         <Stack direction='horizontal' className='mt-2' gap={3}>
+//           <Button type='submit' variant='primary'>
+//             Edit
+//           </Button>
+//           <Button
+//             variant='danger'
+//             onClick={() => dispatch(deleteProduct({ id }))}
+//           >
+//             Delete
+//           </Button>
+//         </Stack>
+//       </Form>
+//     </ListGroup.Item>
+//   );
+// };
 const AddProductForm = () => {
   const dispatch = useDispatch();
   return (
@@ -69,9 +69,9 @@ const Products = ({ fruits }) => {
       <h1>Handling Products via Middleware</h1>
       <AddProductForm></AddProductForm>
       <ListGroup>
-        {fruits.map(({ id, name }) =>
-          connect(null, null)(<Product key={id} {...{ name, id }}></Product>)
-        )}
+        {fruits.map(({ id, name }) => (
+          <Product key={id} {...{ name, id }}></Product>
+        ))}
       </ListGroup>
     </Container>
   );
