@@ -10,8 +10,9 @@ import {
 } from './../store/store-actions';
 
 const mapStateToProps = ({ fruits }) => ({ fruits });
-const Product = ({ name, id }) => {
-  const dispatch = useDispatch();
+const Product = ({ dispatch, name, id }) => {
+  // console.log(props)
+  // const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     const {
@@ -68,9 +69,9 @@ const Products = ({ fruits }) => {
       <h1>Handling Products via Middleware</h1>
       <AddProductForm></AddProductForm>
       <ListGroup>
-        {fruits.map(({ id, name }) => (
-          <Product key={id} {...{ name, id }}></Product>
-        ))}
+        {fruits.map(({ id, name }) =>
+          connect(null, null)(<Product key={id} {...{ name, id }}></Product>)
+        )}
       </ListGroup>
     </Container>
   );
