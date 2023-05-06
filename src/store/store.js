@@ -1,9 +1,46 @@
-import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
+import {
+  applyMiddleware,
+  combineReducers,
+  compose,
+  configureStore,
+  createStore,
+} from '@reduxjs/toolkit';
 import { storeReducer } from './store-reducers';
 import { cakeReducer } from './second-reducer';
+import { forbiddenWordsMiddleware } from './cakes-middleware';
+import { types } from './store-types';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({ fruits: storeReducer, cakes: cakeReducer });
-export const store = configureStore({
+// export const store = configureStore({
+//   reducer,
+//   enhancers: composeEnhancers,
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware().concat(forbiddenWordsMiddleware),
+// });
+// const logger = (store) => (next) => (action) => {
+//   console.log('store', store.getState());
+
+//   return next(action);
+// };
+function logger() {
+  return function (next) {
+    return function (action) {
+      console.log('middleware on');
+      console.log(action.type);
+      return next(action);
+    };
+  };
+}
+const arrowLogger = (store) => (next) => (action) => {
+  console.log('arrow logger : ', action.type);
+  return next(action);
+};
+//Applying Middleware with vanilla redux
+export const store = createStore(
   reducer,
-  enhancers: composeEnhancers,
-});
+  composeEnhancers(
+    applyMiddleware(logger, arrowLogger, forbiddenWordsMiddleware)
+  )
+);
+//Applying Middleware with vanilla redux
