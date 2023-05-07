@@ -12,17 +12,7 @@ import { types } from './store-types';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({ fruits: storeReducer, cakes: cakeReducer });
-// export const store = configureStore({
-//   reducer,
-//   enhancers: composeEnhancers,
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(forbiddenWordsMiddleware),
-// });
-// const logger = (store) => (next) => (action) => {
-//   console.log('store', store.getState());
 
-//   return next(action);
-// };
 function logger() {
   return function (next) {
     return function (action) {
@@ -37,10 +27,19 @@ const arrowLogger = (store) => (next) => (action) => {
   return next(action);
 };
 //Applying Middleware with vanilla redux
-export const store = createStore(
-  reducer,
-  composeEnhancers(
-    applyMiddleware(logger, arrowLogger, forbiddenWordsMiddleware)
-  )
-);
+// export const store = createStore(
+//   reducer,
+//   composeEnhancers(
+//     applyMiddleware(logger, arrowLogger, forbiddenWordsMiddleware)
+//   )
+// );
 //Applying Middleware with vanilla redux
+//Applying Middleware with redux toolkit
+export const store = configureStore({
+  reducer,
+  // enhancers: composeEnhancers,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(logger).concat(arrowLogger),
+});
+
+//Applying Middleware with redux toolkit

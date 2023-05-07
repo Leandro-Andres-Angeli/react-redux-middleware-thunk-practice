@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  //  Link
+} from 'react-router-dom';
 import { Appbar } from './pages/Appbar';
 import Home from './pages/Home';
 import Products from './pages/Products';

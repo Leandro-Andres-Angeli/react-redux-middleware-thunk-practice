@@ -11,6 +11,7 @@ import {
 import { connect } from 'react-redux';
 import { Cake } from '../helpers/cakeModel';
 import { cakeActions } from './../store/second-reducer-actions';
+import { idGenerator } from './../helpers/idGenerator';
 
 const CakesPage = ({ cakes, dispatch }) => {
   // console.log(cakes);
@@ -37,9 +38,20 @@ export default connect(function (state) {
 const AddCakeForm = ({ dispatch }) => {
   const handleAdd = (e) => {
     e.preventDefault();
-    const cake = new Cake(e.target.title.value);
+    //Redux toolkit's store throws error when working with classes , better use plain JS Objects
+    // const cake = new Cake(e.target.title.value);
     // console.log(cake);
-    dispatch(cakeActions.add(cake));
+    //Redux toolkit's store throws error when working with classes , better use plain JS Objects
+    const cakeObj = {
+      id: idGenerator(),
+      title: e.target.title.value,
+      previewDescription: 'preview description cake',
+      detailDescription: 'detail description cake',
+      image:
+        'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',
+    };
+
+    dispatch(cakeActions.add(cakeObj));
   };
   return (
     <Form onSubmit={handleAdd} className='p-2 m-2 border'>

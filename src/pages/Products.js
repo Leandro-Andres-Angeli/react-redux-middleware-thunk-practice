@@ -56,7 +56,8 @@ const AddProductForm = () => {
       className='p-3 m-3 border'
       onSubmit={(e) => {
         e.preventDefault();
-        dispatch(addProduct({ id: idGenerator(), name: e.target.name.value }));
+        const id = idGenerator();
+        dispatch(addProduct({ id, name: e.target.name.value }));
       }}
     >
       <h2>Add new fruit</h2>
