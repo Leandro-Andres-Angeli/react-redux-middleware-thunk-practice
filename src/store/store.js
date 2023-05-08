@@ -12,12 +12,14 @@ import { forbiddenWordsMiddleware } from './cakes-middleware';
 import { types } from './store-types';
 import { usersReducer } from './users-reducer';
 import thunk from 'redux-thunk';
+import { firebaseReducer } from './firebase-reducer';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({
   fruits: storeReducer,
   cakes: cakeReducer,
   users: usersReducer,
+  todos: firebaseReducer,
 });
 
 function logger() {
@@ -47,7 +49,7 @@ export const store = configureStore({
   // enhancers: composeEnhancers,
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware().concat(logger).concat(arrowLogger).concat(thunk),
-  middleware: [...getDefaultMiddleware(), logger, arrowLogger],
+  middleware: [...getDefaultMiddleware(), logger, arrowLogger, thunk],
 });
 
 //Applying Middleware with redux toolkit

@@ -55,6 +55,16 @@ export const Appbar = () => {
             >
               Thunk Section
             </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              activeStyle={{
+                fontWeight: 'bold',
+                color: 'red',
+              }}
+              to='/firebase-section'
+            >
+              Firebase Section
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
