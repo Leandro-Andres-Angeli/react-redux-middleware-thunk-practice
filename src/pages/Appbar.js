@@ -45,6 +45,16 @@ export const Appbar = () => {
             >
               Cakes Page
             </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              activeStyle={{
+                fontWeight: 'bold',
+                color: 'red',
+              }}
+              to='/thunk-section'
+            >
+              Thunk Section
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
