@@ -4,6 +4,7 @@ import {
   compose,
   configureStore,
   createStore,
+  getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import { storeReducer } from './store-reducers';
 import { cakeReducer } from './second-reducer';
@@ -16,7 +17,7 @@ const devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({
   fruits: storeReducer,
   cakes: cakeReducer,
-  user: usersReducer,
+  users: usersReducer,
 });
 
 function logger() {
@@ -44,8 +45,9 @@ const arrowLogger = (store) => (next) => (action) => {
 export const store = configureStore({
   reducer,
   // enhancers: composeEnhancers,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(logger).concat(arrowLogger).concat(thunk),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(logger).concat(arrowLogger).concat(thunk),
+  middleware: [...getDefaultMiddleware(), logger, arrowLogger],
 });
 
 //Applying Middleware with redux toolkit
