@@ -1,3 +1,4 @@
 export const firebaseTypes = {
-  getAll: '[Firbase] get all',
+  getAll: '[Firebase] get all',
+  postTodo: '[Firebase] post',
 };
