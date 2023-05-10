@@ -15,7 +15,7 @@ import { idGenerator } from '../helpers/idGenerator';
 const db = getFirestore(app);
 export const GetFirebaseData = () => {
   let parsedTodos = [];
-  console.log('in');
+
   return async (dispatch) => {
     const todos = await getDocs(collection(db, 'todos'));
     // const todosSnap = onSnapshot(collection(db, 'todos'), querySnap );

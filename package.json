@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@ant-design/colors": "^7.0.0",
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.0",
     "@picocss/pico": "^1.5.10",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^4.2.4",
