@@ -70,12 +70,17 @@ const AddTodoForm = () => {
           <Form.Label>Add Todo Form</Form.Label>
           <Form.Control type='text' name='desc' placeholder='Add New Todo' />
         </Form.Group>
-
+        <input
+          name='img'
+          type='file'
+          accept='.png,.jpg,.jpeg,.webp'
+          // multiple='true'
+        />
         <Button variant='primary' type='submit'>
           Add To Do
         </Button>
       </Form>
-      <Form onSubmit={handleSubmit}>
+      {/* <Form onSubmit={handleSubmit}>
         <input
           name='img'
           type='file'
@@ -83,8 +88,8 @@ const AddTodoForm = () => {
           // multiple='true'
         />
         <Button type='submit'>Upload pic</Button>
-      </Form>
-      {JSON.stringify(url)}
+      </Form> */}
+      {/* {JSON.stringify(url)} */}
     </>
   );
 };
