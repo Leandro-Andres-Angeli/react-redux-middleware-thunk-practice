@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import {
   GetFirebaseData,
   postFirebaseData,
+  putFirebaseData,
 } from '../async_function/async_funcs';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,15 +12,27 @@ import {
   Button,
   Container,
   InputGroup,
+  Image,
 } from 'react-bootstrap';
 // import { firebasePost } from '../store/firebase-actions';
 import { imageUpload } from './../image_upload/imageUpload';
 import { useState } from 'react';
 
-const TodoComponent = ({ id, user, desc, done }) => {
+const TodoComponent = ({ todo }) => {
+  const dispatch = useDispatch();
+  const { id, user, desc, done } = todo;
+  const img = todo.img || '';
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    const formData = Object.fromEntries(new FormData(form));
+    // console.log({ ...formData, done: form.done.checked });
+    dispatch(putFirebaseData({ ...formData, done: form.done.checked, id }));
+  };
   return (
     <ListGroup.Item data-id={id}>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <InputGroup className='mb-3'>
           <InputGroup.Text id='basic-addon1'>User</InputGroup.Text>
           <Form.Control name='user' defaultValue={user || ''} />
@@ -33,13 +46,15 @@ const TodoComponent = ({ id, user, desc, done }) => {
         />
 
         <input name='img' type='file' alt='' />
+        {img && <Image src={img} fluid alt=''></Image>}
+        <Button type='submit'>Apply changes</Button>
       </Form>
     </ListGroup.Item>
   );
 };
 const AddTodoForm = () => {
   const dispatch = useDispatch();
-  const [url, setUrl] = useState('');
+
   const addTodo = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -47,21 +62,21 @@ const AddTodoForm = () => {
     const formData = Object.fromEntries(new FormData(form));
     dispatch(postFirebaseData({ ...formData, user: '', done: false }));
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const img = e.target.img.files[0];
-    // console.log(img);
-    // async function handleUpload() {
-    //   const url = await imageUpload(img);
-    // }
-    // handleUpload();
-    (async () => {
-      console.log(img);
-      const url = await imageUpload(img);
-      await setUrl(url);
-    })();
-    // imageUpload(img).then((res) => setUrl(res));
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const img = e.target.img.files[0];
+  //   // console.log(img);
+  //   // async function handleUpload() {
+  //   //   const url = await imageUpload(img);
+  //   // }
+  //   // handleUpload();
+  //   (async () => {
+  //     console.log(img);
+  //     const url = await imageUpload(img);
+  //     await setUrl(url);
+  //   })();
+  //   // imageUpload(img).then((res) => setUrl(res));
+  // };
 
   return (
     <>
@@ -104,8 +119,8 @@ const FirebaseSection = () => {
     <Container>
       <AddTodoForm></AddTodoForm>
       <ListGroup>
-        {todos.map(({ id, user, desc, done }) => (
-          <TodoComponent key={id} {...{ id, user, desc, done }} />
+        {todos.map((todo) => (
+          <TodoComponent key={todo.id} {...{ todo }} />
         ))}
       </ListGroup>
     </Container>
