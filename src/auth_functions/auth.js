@@ -4,9 +4,12 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   signOut,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import { app } from '../firebase_config/firebase_config';
 import { loginAction, logoutAction } from '../store/auth-actions';
+
 const auth = getAuth(app);
 export const loginUser = ({ email, password }) => {
   return async function (dispatch) {
@@ -50,6 +53,42 @@ export const signOutUser = () => {
       signOut(auth)
         .then((res) => dispatch(logoutAction()))
         .catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+const provider = new GoogleAuthProvider();
+export const googleLogin = () => {
+  // console.log('in');
+
+  // try {
+  //   console.log('in');
+  //   const popUp = await signInWithPopup(auth, provider);
+  //   const token = GoogleAuthProvider.credentialFromResult(popUp);
+  //   const user = popUp.currentUser;
+  //   console.log(user);
+  //   console.log(token);
+  //   return user;
+  // } catch (err) {
+  //   console.log(err);
+  // }
+  return async function (dispatch) {
+    try {
+      console.log('in');
+      const popUp = await signInWithPopup(auth, provider);
+      const token = GoogleAuthProvider.credentialFromResult(popUp);
+      const user = popUp.user;
+      console.log(user);
+      console.log(token);
+      dispatch(
+        loginAction({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName || '',
+        })
+      );
+      return user;
     } catch (err) {
       console.log(err);
     }
