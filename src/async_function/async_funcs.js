@@ -8,6 +8,8 @@ import {
   addDoc,
   onSnapshot,
   updateDoc,
+  getDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import { app } from './../firebase_config/firebase_config';
 import { firebaseGetAll, firebasePost } from './../store/firebase-actions';
@@ -35,41 +37,56 @@ export const postFirebaseData = (newTodo) => {
     //Add doc to firebase without id
     // await addDoc(collection(db, 'todos'), newTodo);
     //Add doc to firebase without id
-
+    let img_url = '';
+    //  await imageUpload(img) : ''
+    if (img.size > 0) {
+      img_url = await imageUpload(img);
+    }
     const todosRef = collection(db, 'todos');
 
-    const id = idGenerator();
-    const img_url = await imageUpload(img);
-    await addDoc(todosRef, { id, img: img_url, ...formFields });
+    const newDoc = await addDoc(todosRef, { img: img_url, ...formFields });
 
-    await dispatch(firebasePost({ id, img: img_url, ...formFields }));
+    await dispatch(
+      firebasePost({ id: newDoc.id, img: img_url, ...formFields })
+    );
+  };
+};
+export const deleteFirebaseData = (id) => {
+  return async (dispatch) => {
+    const docRef = doc(db, 'todos', id);
+    const docSnap = await deleteDoc(docRef);
+    if (docSnap === undefined) {
+      dispatch(GetFirebaseData());
+    }
   };
 };
 export const putFirebaseData = (todoToUpdate) => {
   console.log(todoToUpdate);
   const { id, img, ...formFields } = todoToUpdate;
+  console.log(id);
   return async (dispatch) => {
     // const todos = await getDocs(collection(db, 'todos'));
     //Add doc to firebase without id
     // await addDoc(collection(db, 'todos'), newTodo);
     //Add doc to firebase without id
-    const img_url = img ? await imageUpload(img) : '';
-    await updateDoc(doc(db, 'todos', id), { ...formFields, img: img_url });
-    // await collection(db, 'todos')
-    //   .doc(id)
-    //   .update({ ...formFields, img: img_url });
-
-    // await addDoc(todosRef, { id, img: img_url, ...formFields });
-
-    // await dispatch(firebasePost({ id, img: img_url, ...formFields }));
+    let img_url = '';
+    //  await imageUpload(img) : ''
+    if (img.size > 0) {
+      img_url = await imageUpload(img);
+    }
+    await updateDoc(doc(db, 'todos', id), {
+      ...formFields,
+      img: img_url,
+    });
+    await dispatch(GetFirebaseData());
   };
 };
 export function fetchFromApi() {
   return async (dispatch) => {
     const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    console.log(response);
+    // console.log(response);
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     dispatch(getUsers(json));
   };
 }

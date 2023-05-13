@@ -65,6 +65,26 @@ export const Appbar = () => {
             >
               Firebase Section
             </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              activeStyle={{
+                fontWeight: 'bold',
+                color: 'red',
+              }}
+              to='/login'
+            >
+              Login
+            </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              activeStyle={{
+                fontWeight: 'bold',
+                color: 'red',
+              }}
+              to='/signin'
+            >
+              Signin
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

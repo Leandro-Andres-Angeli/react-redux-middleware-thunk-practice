@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import {
+  deleteFirebaseData,
   GetFirebaseData,
   postFirebaseData,
   putFirebaseData,
@@ -13,10 +14,9 @@ import {
   Container,
   InputGroup,
   Image,
+  Stack,
 } from 'react-bootstrap';
 // import { firebasePost } from '../store/firebase-actions';
-import { imageUpload } from './../image_upload/imageUpload';
-import { useState } from 'react';
 
 const TodoComponent = ({ todo }) => {
   const dispatch = useDispatch();
@@ -30,12 +30,19 @@ const TodoComponent = ({ todo }) => {
     // console.log({ ...formData, done: form.done.checked });
     dispatch(putFirebaseData({ ...formData, done: form.done.checked, id }));
   };
+  const handleDelete = () => {
+    dispatch(deleteFirebaseData(id));
+  };
   return (
     <ListGroup.Item data-id={id}>
       <Form onSubmit={handleSubmit}>
         <InputGroup className='mb-3'>
           <InputGroup.Text id='basic-addon1'>User</InputGroup.Text>
           <Form.Control name='user' defaultValue={user || ''} />
+        </InputGroup>
+        <InputGroup className='mb-3'>
+          <InputGroup.Text id='basic-addon1'>Desc</InputGroup.Text>
+          <Form.Control name='desc' defaultValue={desc || ''} />
         </InputGroup>
         <Form.Check // prettier-ignore
           type='checkbox'
@@ -47,7 +54,12 @@ const TodoComponent = ({ todo }) => {
 
         <input name='img' type='file' alt='' />
         {img && <Image src={img} fluid alt=''></Image>}
-        <Button type='submit'>Apply changes</Button>
+        <Stack>
+          <Button type='submit'>Apply changes</Button>
+          <Button variant='danger' onClick={handleDelete}>
+            Delete{' '}
+          </Button>
+        </Stack>
       </Form>
     </ListGroup.Item>
   );
@@ -60,7 +72,7 @@ const AddTodoForm = () => {
     const form = e.target;
     console.log(form);
     const formData = Object.fromEntries(new FormData(form));
-    dispatch(postFirebaseData({ ...formData, user: '', done: false }));
+    dispatch(postFirebaseData({ ...formData, done: false }));
   };
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -81,6 +93,10 @@ const AddTodoForm = () => {
   return (
     <>
       <Form className='p-5 m-5 border' onSubmit={addTodo}>
+        <Form.Group className='mb-3' controlId='formBasicEmail'>
+          <Form.Label>User</Form.Label>
+          <Form.Control type='text' name='user' placeholder='Add User' />
+        </Form.Group>
         <Form.Group className='mb-3' controlId='formBasicEmail'>
           <Form.Label>Add Todo Form</Form.Label>
           <Form.Control type='text' name='desc' placeholder='Add New Todo' />

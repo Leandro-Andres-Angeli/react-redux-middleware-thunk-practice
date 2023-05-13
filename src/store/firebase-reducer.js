@@ -6,7 +6,7 @@ export const firebaseReducer = (state = [], action) => {
       return action.payload;
     case firebaseTypes.postTodo:
       return produce(state, (draftState) => {
-        draftState.push({ ...action.payload, done: false, user: '' });
+        draftState.push({ ...action.payload });
       });
     default:
       return state;
