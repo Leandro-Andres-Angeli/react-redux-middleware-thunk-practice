@@ -1,10 +1,19 @@
+import { getAuth, signOut } from 'firebase/auth';
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signOutUser } from './../auth_functions/auth';
 export const Appbar = () => {
+  const dispatch = useDispatch();
+  const handleSignout = () => {
+    console.log('signout');
+    dispatch(signOutUser());
+  };
   return (
     <Navbar bg='dark' variant='dark' expand='lg'>
       <Container>
@@ -87,6 +96,7 @@ export const Appbar = () => {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        <Button onClick={handleSignout}>Sign Out</Button>
       </Container>
     </Navbar>
   );

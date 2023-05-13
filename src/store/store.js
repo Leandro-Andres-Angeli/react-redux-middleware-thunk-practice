@@ -13,6 +13,7 @@ import { types } from './store-types';
 import { usersReducer } from './users-reducer';
 import thunk from 'redux-thunk';
 import { firebaseReducer } from './firebase-reducer';
+import { authReducer } from './auth-reducer';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   cakes: cakeReducer,
   users: usersReducer,
   todos: firebaseReducer,
+  logged: authReducer,
 });
 
 function logger() {
